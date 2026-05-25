@@ -8,6 +8,8 @@ import com.mbta.tracker.model.Stop;
 import com.mbta.tracker.repository.PredictionRepository;
 import com.mbta.tracker.repository.RouteRepository;
 import com.mbta.tracker.repository.StopRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -30,6 +32,7 @@ public class PredictionService {
         this.stopRepository = stopRepository;
     }
 
+    @CacheEvict(value = "predictions", key = "#stopId")
     public void fetchAndSavePredictions(String stopId) {
         MbtaApiResponse response = mbtaApiClient.getPredictionsForStop(stopId);
 
@@ -99,6 +102,7 @@ public class PredictionService {
         }
     }
 
+    @Cacheable(value = "predictions", key = "#stopId")
     public List<Prediction> getPredictionsForStop(String stopId) {
         return predictionRepository.findByStopIdOrderByArrivalTimeAsc(stopId);
     }
