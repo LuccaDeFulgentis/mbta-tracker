@@ -40,6 +40,7 @@ jobs:
       - name: Run tests
         env:
           MBTA_API_KEY: test_key
+          MBTA_API_BASE_URL: https://api-v3.mbta.com
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/mbta
           SPRING_DATASOURCE_USERNAME: postgres
           SPRING_DATASOURCE_PASSWORD: ${{ secrets.DB_PASSWORD }}
