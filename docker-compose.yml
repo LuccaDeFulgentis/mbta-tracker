@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: mbta-postgres
+    environment:
+      POSTGRES_DB: mbta
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: mbta-app
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mbta
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      MBTA_API_KEY: ${MBTA_API_KEY}
+      MBTA_API_BASE_URL: https://api-v3.mbta.com
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:
