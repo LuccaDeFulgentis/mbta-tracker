@@ -34,6 +34,9 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Make mvnw executable
+        run: chmod +x ./mvnw
+
       - name: Run tests
         env:
           MBTA_API_KEY: test_key
